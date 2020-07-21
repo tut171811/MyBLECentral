@@ -125,12 +125,12 @@
     <Compile Include="BLEPeripheral_Core\BLEDeviceGetterFromAdvertisePacket.cs" />
     <Compile Include="BLEPeripheral_Core\BLEDeviceGetterFromDeviceInformation.cs" />
     <Compile Include="BLEPeripheral_Core\BLEPeripheral.cs" />
-    <Compile Include="BLEPeripheral_Core\IBLECharacteristic.cs" />
     <Compile Include="BLEPeripheral_Core\IBLEDeviceGetter.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimpleString\SimpleStringService.cs" />
     <Compile Include="Toio\ToioCharacteristics.cs" />
     <Compile Include="Toio\ToioService.cs" />
   </ItemGroup>

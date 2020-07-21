@@ -13,24 +13,38 @@ namespace BLEClientTest_UWP_.BLEPeripheral_Core
     {
         private readonly Guid serviceUuid;
         private GattDeviceService service;
+        private int trial = 0;
 
         public BLEPeripheral(Guid serviceUuid)
         {
             this.serviceUuid = serviceUuid;
         }
 
-        public async Task Initialize()
+        public async Task<bool> Initialize()
         {
-            //IBLEDeviceGetter deviceGetter = new BLEDeviceGetterFromDeviceInformation();
-            IBLEDeviceGetter deviceGetter = new BLEDeviceGetterFromAdvertisePacket();
+            IBLEDeviceGetter deviceGetter = new BLEDeviceGetterFromDeviceInformation();
+            //IBLEDeviceGetter deviceGetter = new BLEDeviceGetterFromAdvertisePacket();
 
             var bleDevice = deviceGetter.Get(this.serviceUuid);
 
-            Debug.WriteLine("bleDevice found");
+            Debug.WriteLine($"bleDevice found: {bleDevice.DeviceInformation.Name}");
 
             // get service (listで返ってくるが、uuidを指定しているため、ひとつのみ返ってくる)
             var services = await bleDevice.GetGattServicesForUuidAsync(this.serviceUuid);
-            this.service = services.Services.First();
+            if(services.Status == GattCommunicationStatus.Success)
+                this.service = services.Services.First();
+            else
+            {
+                Debug.WriteLine("cannot connect bleDevice");
+                Debug.WriteLine("try to connect again");
+                this.trial++;
+                if (this.trial < 3)
+                    await Initialize();
+                else 
+                    return false;
+            }
+
+            return true;
         }
 
         public async Task<GattCharacteristic> GetCharacteristicAsync(Guid characteristicUuid) 
@@ -45,6 +59,9 @@ namespace BLEClientTest_UWP_.BLEPeripheral_Core
             Debug.WriteLine($"# of characteristics: {characteristics.Characteristics.Count}");
 
             var chara = characteristics.Characteristics.First();
+            var r = await chara.ReadValueAsync();
+            Debug.WriteLine(r.Status);
+            
 
             // 初回Connect時にディスクリプタの値はNone
             // notifyのために，ディスクリプタの値をNotifyにする必要がある

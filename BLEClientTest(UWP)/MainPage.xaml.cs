@@ -1,27 +1,9 @@
-﻿using BLEClientTest_UWP_.BLEPeripheral_Core;
+﻿using BLEClientTest_UWP_.SimpleString;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.ConstrainedExecution;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.Devices.Bluetooth;
+using Windows.ApplicationModel.Chat;
 using Windows.Devices.Bluetooth.GenericAttributeProfile;
-using Windows.Devices.Enumeration;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x411 を参照してください
 
@@ -32,125 +14,70 @@ namespace BLEClientTest_UWP_
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        //private readonly Guid serviceUuid = new Guid("4fafc201-1fb5-459e-8fcc-c5c9c331914b");
-        private readonly Guid serviceUuid = new Guid("3773c59c-bf25-46d6-9d23-eeb34f87997e");
-        //private readonly Guid charaUuid = new Guid("beb5483e-36e1-4688-b7f5-ea07361b26a8");
-        private readonly Guid charaUuid = new Guid("f7a6736c-7644-4daa-be85-29cb174b6df2");
-
-        private GattCharacteristic chara;
+        private readonly SimpleStringService simpleString;
 
         public MainPage()
         {
             this.InitializeComponent();
+            ToggleControlEnabled(false);
 
-            this.NotifyToggleButton.Click += async (s, e) =>
+            this.simpleString = new SimpleStringService();
+            this.simpleString.ValueChanged += SimpleString_ValueChanged;
+            this.simpleString.OnAvailable += async (s, e) =>
             {
+                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                {
+                    ToggleControlEnabled(true);
+                });
+            };
+
+            this.NotifyToggleButton.Click += (s, e) =>
+            {
+                var isChecked = this.NotifyToggleButton.IsChecked.Value;
+                AppendLog($"[Notify " + (isChecked ? "on" : "off") + "]");
+
                 if (this.NotifyToggleButton.IsChecked.HasValue)
-                    await ToggleNotifyAsync(this.NotifyToggleButton.IsChecked.Value);
+                    this.simpleString.SetNotify(isChecked);
             };
             this.ReadButton.Click += async (s, e) =>
             {
-                await ReadAsync();
+                AppendLog("[NotifyImmediate]");
+
+                var str = await this.simpleString.ReadAsync();
+                AppendLog(str);
             };
             this.WriteButton.Click += async (a, e) =>
             {
-                await WriteAsync(this.WriteBox.Text);
+                var str = this.WriteBox.Text;
+                AppendLog($"[Write]: {str}");
+
+                if (await this.simpleString.WriteAsync(str))
+                {
+                    AppendLog("Success.");
+                }
             };
-
-            _ = Task.Factory.StartNew(async () =>
-            {
-                var blePeripheral = new BLEPeripheral(serviceUuid);
-                await blePeripheral.Initialize();
-                this.chara = await blePeripheral.GetCharacteristicAsync(charaUuid);
-            });
         }
 
-        private async Task AppendLog(string str)
+        private void ToggleControlEnabled(bool isEnabled)
         {
-            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-            {
-                this.LogBox.Text += str + "\n";
-            });
+            this.ReadButton.IsEnabled = isEnabled;
+            this.WriteButton.IsEnabled = isEnabled;
+            this.NotifyToggleButton.IsEnabled = isEnabled;
         }
 
-        private string ReadDataToString(IBuffer buf)
+        private void AppendLog(string str)
         {
-            var reader = DataReader.FromBuffer(buf);
-            byte[] input = new byte[reader.UnconsumedBufferLength];
-            reader.ReadBytes(input);
-            return Encoding.UTF8.GetString(input);
-        }
-
-        // Notifyできるようにする
-        private async Task ToggleNotifyAsync(bool isChecked)
-        {
-            //var chara = await GetCharacteristic(serviceUuid, charaUuid);
-            var properties = chara.CharacteristicProperties;
-            if (properties.HasFlag(GattCharacteristicProperties.Notify))
-            {
-
-
-                await AppendLog($"[Notify " + (isChecked ? "on" : "off") + "]");
-                if (isChecked)
-                {
-                    Debug.WriteLine("event add");
-                    chara.ValueChanged += Chara_ValueChanged;
-                }
-                else
-                {
-                    Debug.WriteLine("event remove");
-                    chara.ValueChanged -= Chara_ValueChanged;
-                }
-            }
-        }
-
-        // 即座にNotifyの値を取得する？
-        private async Task ReadAsync()
-        {
-            //var chara = await GetCharacteristic(serviceUuid, charaUuid);
-            var properties = chara.CharacteristicProperties;
-            if (properties.HasFlag(GattCharacteristicProperties.Read))
-            {
-                await AppendLog("[NotifyImmediate]");
-                //GattReadResult r = chara.ReadValueAsync().AsTask<GattReadResult>().Result;
-                var r = await chara.ReadValueAsync(BluetoothCacheMode.Uncached);
-
-                if (r.Status == GattCommunicationStatus.Success)
-                {
-                    await AppendLog(ReadDataToString(r.Value));
-                }
-                else
-                {
-                    await AppendLog("Failed to read value.");
-                }
-            }
-        }
-
-        private async Task WriteAsync(string str)
-        {
-            //var chara = await GetCharacteristic(serviceUuid, charaUuid);
-            var properties = chara.CharacteristicProperties;
-            if (properties.HasFlag(GattCharacteristicProperties.Write))
-            {
-                await AppendLog($"[Write]: {str}");
-                var writer = new DataWriter();
-                writer.ByteOrder = ByteOrder.LittleEndian;
-                writer.WriteString(str);
-                var r = await chara.WriteValueAsync(writer.DetachBuffer());
-                if (r == GattCommunicationStatus.Success)
-                {
-                    await AppendLog("Success.");
-                }
-            }
+            this.LogBox.Text += str + "\n";
         }
 
         #region event
 
-        
-
-        private async void Chara_ValueChanged(GattCharacteristic sender, GattValueChangedEventArgs args)
+        private async void SimpleString_ValueChanged(GattCharacteristic sender, GattValueChangedEventArgs args)
         {
-            await AppendLog($"Value: {ReadDataToString(args.CharacteristicValue)}");
+            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                AppendLog($"Value: {this.simpleString.BufferToString(args.CharacteristicValue)}");
+            });
         }
 
         private void Reset_Click(object sender, RoutedEventArgs e)

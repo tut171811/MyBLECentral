@@ -37,6 +37,8 @@ namespace BLEClientTest_UWP_.BLEPeripheral_Core
             dw.Added -= Watcher_DeviceAdded;
             dw.Stop();
 
+            Debug.WriteLine("detect");
+
             // get Bluetooth device 
             this.bleDevice = await BluetoothLEDevice.FromIdAsync(deviceInfo.Id);
 
