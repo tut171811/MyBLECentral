@@ -1,0 +1,7 @@
+﻿<Application
+    x:Class="BLEClientTest_UWP_.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BLEClientTest_UWP_">
+
+</Application>
