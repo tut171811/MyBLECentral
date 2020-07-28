@@ -1,0 +1,17 @@
+﻿<UserControl
+    x:Class="ToioProxyClient.Control.TextBoxWithArrow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ToioProxyClient"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" Height="125" Width="129"
+    DataContext="Test">
+
+    <Grid Margin="10">
+        <ToggleButton Content="↑" VerticalAlignment="Top" FontWeight="Bold" FontSize="18" Margin="5,0,4,0" HorizontalAlignment="Stretch" Height="32"/>
+        <TextBox Text="{Binding Path=DataContext}" TextWrapping="Wrap" Margin="0,36,0,36" Height="32"/>
+        <ToggleButton Content="↓" VerticalAlignment="Bottom" Margin="5,0,4,0" FontWeight="Bold" FontSize="18" HorizontalAlignment="Stretch" Height="32"/>
+
+    </Grid>
+</UserControl>
