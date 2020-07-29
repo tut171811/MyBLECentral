@@ -22,8 +22,8 @@ namespace BLEClientTest_UWP_.BLEPeripheral_Core
 
         public async Task<bool> Initialize()
         {
-            IBLEDeviceGetter deviceGetter = new BLEDeviceGetterFromDeviceInformation();
-            //IBLEDeviceGetter deviceGetter = new BLEDeviceGetterFromAdvertisePacket();
+            //IBLEDeviceGetter deviceGetter = new BLEDeviceGetterFromDeviceInformation();
+            IBLEDeviceGetter deviceGetter = new BLEDeviceGetterFromAdvertisePacket();
 
             var bleDevice = deviceGetter.Get(this.serviceUuid);
 
@@ -59,8 +59,8 @@ namespace BLEClientTest_UWP_.BLEPeripheral_Core
             Debug.WriteLine($"# of characteristics: {characteristics.Characteristics.Count}");
 
             var chara = characteristics.Characteristics.First();
-            var r = await chara.ReadValueAsync();
-            Debug.WriteLine(r.Status);
+            //var r = await chara.ReadValueAsync();
+            //Debug.WriteLine(r.Status);
             
 
             // 初回Connect時にディスクリプタの値はNone

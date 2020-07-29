@@ -29,6 +29,11 @@ namespace BLEClientTest_UWP_.SimpleString
 
         public SimpleStringService()
         {
+            this.OnAvailable += (s, e) =>
+            {
+                Debug.WriteLine("Available", this);
+            };
+
             _ = Task.Factory.StartNew(async () =>
             {
                 var blePeripheral = new BLEPeripheral(serviceUuid);

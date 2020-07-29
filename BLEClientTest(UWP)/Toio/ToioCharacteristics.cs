@@ -8,6 +8,18 @@ using Windows.UI.Xaml;
 
 namespace BLEClientTest_UWP_.Toio
 {
+    enum ToioCharacteristics
+    {
+        IDInfomation,
+        SensorInformation,
+        ButttonInformation,
+        BatteryInformation,
+        MotorControl,
+        LightControl,
+        SoundControl,
+        Configuration
+    }
+
     static class ToioCharacteristicExtends
     {
         private static readonly Guid IdUuid = new Guid("10B20101-5B3B-4571-9508-CF3EFCD7BBAE");
@@ -21,17 +33,5 @@ namespace BLEClientTest_UWP_.Toio
                     throw new ArgumentException("The characteristic no exists.");
             }
         }
-    }
-
-    enum ToioCharacteristics
-    {
-        IDInfomation,
-        SensorInformation,
-        ButttonInformation,
-        BatteryInformation,
-        MotorControl,
-        LightControl,
-        SoundControl,
-        Configuration
     }
 }

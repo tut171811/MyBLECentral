@@ -131,6 +131,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleString\SimpleStringService.cs" />
+    <Compile Include="Toio\IdInformation.cs" />
     <Compile Include="Toio\ToioCharacteristics.cs" />
     <Compile Include="Toio\ToioService.cs" />
   </ItemGroup>
