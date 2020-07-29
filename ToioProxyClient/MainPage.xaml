@@ -5,19 +5,26 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local1="using:ToioProxyClient.Control"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Height="600">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Height="357" Width="840">
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="121*"/>
-            <ColumnDefinition Width="129*"/>
+            <ColumnDefinition Width="181*"/>
+            <ColumnDefinition Width="99*"/>
         </Grid.ColumnDefinitions>
         <Pivot Title="Pivot">
             <PivotItem Header="Auto">
                 <local1:ToioMovingPanel Margin="10"/>
             </PivotItem>
             <PivotItem Header="Manual">
-                <local1:TextBoxWithArrow Text="Hello" HorizontalAlignment="Left" Height="131" Margin="395,0,0,0" VerticalAlignment="Center" Width="220"/>
+                <Grid>
+                    <local1:TextBoxWithArrow Text="0" HorizontalAlignment="Left" Height="131" Margin="14,29,0,0" VerticalAlignment="Top" Width="110"/>
+                    <local1:TextBoxWithArrow Text="0" HorizontalAlignment="Left" Height="131" Margin="241,29,0,0" VerticalAlignment="Top" Width="110"/>
+                    <TextBox HorizontalAlignment="Left" Margin="147,60,0,0" Text="0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="147,41,0,0" Text="Time[ms]" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" Text="Left Wheel Velocity" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="241,14,0,0" Text="Right Wheel Velocity" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                </Grid>
             </PivotItem>
         </Pivot>
     </Grid>

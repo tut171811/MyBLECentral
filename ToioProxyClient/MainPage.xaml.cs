@@ -27,9 +27,5 @@ namespace ToioProxyClient
             this.InitializeComponent();
         }
 
-        private void TextBoxWithArrow_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

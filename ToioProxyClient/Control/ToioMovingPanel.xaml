@@ -16,17 +16,17 @@
         </Grid.ColumnDefinitions>
         <Border Background="Pink" BorderThickness="1" BorderBrush="Black"/>
         <Border Grid.Column="1" Background="LightYellow" BorderThickness="1" BorderBrush="Black"/>
-        
+
         <Rectangle x:Name="Field" Stroke="Black" Fill="AliceBlue" Height="176" VerticalAlignment="Center" HorizontalAlignment="Center" Width="234"/>
-        <Rectangle x:Name="Toio" Fill="White" Width="10" Height="10" Margin="248,199,142,91" Stroke="Black"/>
+        <Rectangle x:Name="Toio" Fill="White" Stroke="Black" VerticalAlignment="Center" HorizontalAlignment="Center" Width="10" Height="10" />
 
         <StackPanel Margin="20" Orientation="Vertical" Grid.Column="1">
             <TextBlock Text="移動タイプ" TextWrapping="Wrap"/>
             <ComboBox x:Name="MovementTypeSelector" Margin="0,0,0,20" Width="120"/>
-            
+
             <TextBlock Text="最大速度指示値" TextWrapping="Wrap"/>
             <TextBox x:Name="MaxSpeedBox" Margin="0,0,0,20" Text="TextBox" TextWrapping="Wrap"/>
-            
+
             <TextBlock Text="速度変化タイプ" TextWrapping="Wrap"/>
             <ComboBox x:Name="AccelerateTypeSelector" Width="120"/>
         </StackPanel>
