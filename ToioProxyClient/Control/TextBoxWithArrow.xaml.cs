@@ -19,10 +19,55 @@ namespace ToioProxyClient.Control
 {
     public sealed partial class TextBoxWithArrow : UserControl
     {
+        public string Text
+        {
+            set
+            {
+                this.Box1.Text = value;
+            }
+            get
+            {
+                return this.Box1.Text;
+            }
+        }
+
+        private bool isUpperChecked = true;
+        public bool IsUpperChecked
+        {
+            set
+            {
+                this.isUpperChecked = value;
+                Toggle(value);
+            }
+            get
+            {
+                return this.isUpperChecked;
+            }
+        }
 
         public TextBoxWithArrow()
         {
             this.InitializeComponent();
+            this.UpperButton.Checked += UpperButton_Checked;
+            this.LowerButton.Checked += LowerButton_Checked;
+            this.UpperButton.IsChecked = true;
+        }
+
+        private void Toggle(bool isUpper)
+        {
+            this.UpperButton.IsChecked = isUpper;
+            this.LowerButton.IsChecked = !isUpper;
+            //this.Text = this.IsUpperChecked.ToString();
+        }
+
+        private void UpperButton_Checked(object sender, RoutedEventArgs e)
+        {
+            this.IsUpperChecked = true;
+        }
+
+        private void LowerButton_Checked(object sender, RoutedEventArgs e)
+        {
+            this.IsUpperChecked = false;
         }
     }
 }

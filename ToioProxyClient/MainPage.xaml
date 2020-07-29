@@ -2,9 +2,8 @@
     x:Class="ToioProxyClient.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:ToioProxyClient"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local1="using:ToioProxyClient.Control"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Height="600">
 
@@ -15,10 +14,10 @@
         </Grid.ColumnDefinitions>
         <Pivot Title="Pivot">
             <PivotItem Header="Auto">
-                <local:ToioMovingPanel Margin="10"/>
+                <local1:ToioMovingPanel Margin="10"/>
             </PivotItem>
             <PivotItem Header="Manual">
-                <local:TextBoxWithArrow HorizontalAlignment="Left" Height="131" Margin="395,0,0,0" VerticalAlignment="Center" Width="220"/>
+                <local1:TextBoxWithArrow Text="Hello" HorizontalAlignment="Left" Height="131" Margin="395,0,0,0" VerticalAlignment="Center" Width="220"/>
             </PivotItem>
         </Pivot>
     </Grid>

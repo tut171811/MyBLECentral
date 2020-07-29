@@ -9,9 +9,9 @@
     DataContext="Test">
 
     <Grid Margin="10">
-        <ToggleButton Content="↑" VerticalAlignment="Top" FontWeight="Bold" FontSize="18" Margin="5,0,4,0" HorizontalAlignment="Stretch" Height="32"/>
-        <TextBox Text="{Binding Path=DataContext}" TextWrapping="Wrap" Margin="0,36,0,36" Height="32"/>
-        <ToggleButton Content="↓" VerticalAlignment="Bottom" Margin="5,0,4,0" FontWeight="Bold" FontSize="18" HorizontalAlignment="Stretch" Height="32"/>
+        <ToggleButton x:Name="UpperButton" Content="↑" VerticalAlignment="Top" FontWeight="Bold" FontSize="18" Margin="5,0,4,0" HorizontalAlignment="Stretch" Height="32" Checked="UpperButton_Checked"/>
+        <TextBox x:Name="Box1" Text="{Binding Path=DataContext}" TextWrapping="Wrap" Margin="0,36,0,36" Height="32"/>
+        <ToggleButton x:Name="LowerButton" Content="↓" VerticalAlignment="Bottom" Margin="5,0,4,0" FontWeight="Bold" FontSize="18" HorizontalAlignment="Stretch" Height="32" Checked="LowerButton_Checked"/>
 
     </Grid>
 </UserControl>
