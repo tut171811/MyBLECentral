@@ -79,7 +79,7 @@ namespace BLEClientTest_UWP_.Toio
 
         #region Read/Notify
 
-        event EventHandler<MotorControlReponse> ReceiveResponse;
+        event EventHandler<MotorControlReponse> ResponseReceived;
 
         MotorControlReponse ReadResponse();
 
